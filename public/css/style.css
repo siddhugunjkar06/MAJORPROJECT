@@ -1,0 +1,141 @@
+body {
+   font-family: "Plus Jakarta Sans", sans-serif !important;
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+/* Navbar */
+.navbar {
+    height: 5rem;
+    background-color: white !important;
+}
+
+.navbar .navbar-brand {
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+} 
+
+/* Footer */
+.f-info-links a{
+    text-decoration: none;
+    color:#222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+    
+}
+.f-info-links, .f-info-socials, .f-info-brand {
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.f-info-socials i{
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+}
+.f-info {
+    text-align: center;
+    display: flex;
+    height: 5rem;
+    background-color: #f3fae1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+}
+
+/* Cards */
+.card {
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top {
+    border-radius: 1rem !important; 
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body {
+    padding: 0 !important;
+}
+
+.listing-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Card Effect */
+.card-img-overlay {
+    opacity: 0;
+}
+.card-img-overlay:hover {
+    border-style: solid ;
+    border-image-width: 0.2rem;
+    border-color: rgb(0, 0, 0);
+    border-radius: 1rem;
+    opacity: 0.2;
+    /* background-color: #ffffff; */
+}
+.card {
+    transition: transform 0.5s ease;
+}
+.card:hover {
+    transform: scale(1.03);
+}
+
+.btn {
+    background-color: #ffe5ec ;
+    color: #fe424d ;
+}
+.btns {
+    display:flex;
+}
+h3 {
+    color: #7b2cbf !important;
+}
+.card-show {
+    padding: 0;
+    padding: 0;
+}
+
+
+/* FOR STAR */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.star-rating input {
+  display: none; /* Hide the actual radio buttons */
+}
+
+.star-rating label {
+  font-size: 2rem;
+  color: #ccc; /* Default empty star color */
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+/* Hover and Checked states */
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #f5b301; /* Gold color */
+}
+
+/* Map */
+#map {
+     height: 400px; 
+     width: 80vh;
+    }
