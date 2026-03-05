@@ -76,16 +76,55 @@ module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
+    if (req.body.listing?.location) {
+        const address = req.body.listing.location;
+        try {
+            const geoUrl = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(
+                address
+            )}&apiKey=${mapToken}`;
+            const geoRes = await fetch(geoUrl);
+            const geoData = await geoRes.json();
+            
+            // If we got a geocode hit, update the geometry
+            if (geoData.features && geoData.features[0]) {
+                const [lng, lat] = geoData.features[0].geometry.coordinates;
+                req.body.listing.geometry = {
+                    type: "Point",
+                    coordinates: [lng, lat],
+                };
+            }
+        } catch (e) {
+            console.error("Geocoding error during update:", e);
+            req.flash("error", "Failed to geocode the location");
+            return res.redirect(`/listings/${id}/edit`);
+        }
+    }
     if (typeof req.file !== "undefined") {
         let url = req.file.path;
         let filename = req.file.filename;
         listing.image = { url, filename };
         await listing.save();
     }
-    
+     try {
+        // 3. Find and update the listing
+        const updatedListing = await Listing.findByIdAndUpdate(
+            id, 
+            { ...req.body.listing },
+            { 
+                new: true,  // Return the updated document
+                runValidators: true  // Run schema validators
+            }
+        )
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
+    } catch (error) {
+        console.error("Error updating listing:", error);
+        req.flash("error", "Failed to update listing");
+        res.redirect(`/listings/${id}/edit`);
+    }
 };
+
+
 
 module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;

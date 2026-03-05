@@ -1,28 +1,27 @@
 <style>
-  .btn-search{
-    font-size: 0.80rem;
-    background-color: #fe424d;
-    color: #fff;
-    border-radius: 20px;
-    padding: 0 1rem 0 1rem;
-  }
-  .btn-search:hover{
-    background-color: #fe424d;
-    color: #fff;
-  }
-  .btn-search i{
-    display:inline;
-    margin-right: 0.5rem;
-  }
-  .search-bar{
-    border-radius: 20px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 0.85rem;
-  }
+.nav-search-wrapper {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    left: 50%;
+}
+
+.nav-search-wrapper .simple-search {
+    padding: 0;
+}
+
+.nav-search-wrapper .search-wrapper {
+    background: #f5f5f5;
+    border-color: transparent;
+}
+
+.nav-search-wrapper .search-wrapper:focus-within {
+    background: white;
+}
 </style>
 
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top" !important>
   <div class="container-fluid">
     <a class="navbar-brand" href="/listings"><i class="lni lni-airbnb"></i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >s
@@ -32,12 +31,11 @@
       <div class="navbar-nav">
         <a class="nav-link active" href="/listings">Explore</a>
       </div>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
-        <input class="form-control search-bar me-2" type="search" placeholder="Search destination" />
-        <button class="btn btn-search" type="submit"><i class="fa-brands fa-sistrix"></i>Search</button>
-      </form>
-      </div>
+      <div class="nav-search-wrapper">
+            <%- include('simpleSearch', { 
+                searchQuery: typeof searchQuery !== 'undefined' ? searchQuery : '' 
+            }) %>
+        </div>
       <div class="navbar-nav ms-auto">
         <a class="nav-link active" href="/listings/new">Become a host</a>
         <% if(!currUser) { %>

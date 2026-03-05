@@ -36,6 +36,16 @@ const listingSchema = new Schema({
     }
   }
 });
+listingSchema.index({ 
+    title: 'text', 
+    description: 'text', 
+    location: 'text',
+    price:'number',
+    country: 'text' 
+});
+
+// Create a regular index for price (for range queries)
+listingSchema.index({ price: 1 });
 
 listingSchema.post("findOneAndDelete", async(listing)=> {
   if (listing) {

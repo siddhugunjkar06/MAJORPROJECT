@@ -1,0 +1,291 @@
+<!-- views/listings/search-results.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search for Wanderlust</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.lineicons.com/5.0/lineicons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+           
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Search Header */
+        .search-header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .search-header h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .search-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #666;
+        }
+        
+        .results-count {
+            background: #ff385c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .search-query {
+            font-size: 18px;
+        }
+        
+        .search-query strong {
+            color: #ff385c;
+        }
+        
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .listing-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .listing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .listing-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .listing-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .listing-card:hover .listing-image img {
+            transform: scale(1.05);
+        }
+        
+        .listing-details {
+            padding: 15px;
+        }
+        
+        .listing-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .listing-location {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .listing-location i {
+            color: #ff385c;
+            font-size: 12px;
+        }
+        
+        .listing-description {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            max-height: 60px;
+            overflow: hidden;
+            display: -webkit-box;
+            /* -webkit-line-clamp: 3; */
+            -webkit-box-orient: vertical;
+        }
+        
+        .listing-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff385c;
+        }
+        
+        .listing-price span {
+            font-size: 14px;
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .highlight {
+            background-color: #fff3e0;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .no-results i {
+            font-size: 60px;
+            color: #ff385c;
+            margin-bottom: 20px;
+        }
+        
+        .no-results h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .no-results p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .browse-link {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #ff385c;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        .browse-link:hover {
+            background: #e31c5f;
+        }
+        
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading i {
+            font-size: 40px;
+            color: #ff385c;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %>
+    
+    <div class="container">
+        <!-- Search Header -->
+        <div class="search-header">
+            <h2>Search Results</h2>
+            <div class="search-info">
+                <span class="results-count"><%= resultsCount %> found</span>
+                <% if (searchPerformed) { %>
+                    <span class="search-query">
+                        for "<strong><%= searchQuery %></strong>"
+                    </span>
+                <% } %>
+            </div>
+        </div>
+        
+       
+        <!-- Results Grid -->
+        <% if (listings.length > 0) { %>
+            <div class="results-grid">
+                <% listings.forEach(listing => { %>
+                    <div class="listing-card">
+                        <a href="/listings/<%= listing._id %>">
+                            <div class="listing-image">
+                                <img src="<%= listing.image.url %>" alt="<%= listing.title %>">
+                            </div>
+                            <div class="listing-details">
+                                <h3 class="listing-title">
+                                    <%= listing.title %>
+                                </h3>
+                                <div class="listing-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span><%= listing.location %>, <%= listing.country %></span>
+                                </div>
+                                <p class="listing-description">
+                                    <%= listing.description.substring(0, 120) %>...
+                                </p>
+                                <div class="listing-price">
+                                    ₹<%= listing.price %> <span>/ night</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else if (searchPerformed) { %>
+            <!-- No Results Found -->
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                <h3>No listings found</h3>
+                <p>We couldn't find any listings matching "<strong><%= searchQuery %></strong>"</p>
+                <p>Try different keywords or browse all listings</p>
+                <a href="/listings" class="browse-link">Browse All Listings</a>
+            </div>
+        <% } %>
+    </div>
+    
+    <script>
+    // Simple loading animation (optional)
+    document.querySelector('.simple-search-form').addEventListener('submit', function() {
+        const btn = this.querySelector('.simple-search-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+        btn.disabled = true;
+    });
+    </script>
+</body>
+</html>

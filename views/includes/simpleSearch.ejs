@@ -1,0 +1,102 @@
+<!-- views/partials/simpleSearch.ejs -->
+<div class="simple-search">
+    <form action="/search" method="GET" class="simple-search-form">
+        <div class="search-wrapper">
+            <input 
+                type="text" 
+                name="q" 
+                value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                placeholder="Search related destinations..."
+                class="simple-search-input"
+                autocomplete="off"
+            >
+            <button type="submit" class="simple-search-btn">
+                <i class="fas fa-search"></i>
+                <span class="btn-text">Search</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+.simple-search {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.simple-search-form {
+    width: 100%;
+}
+
+.search-wrapper {
+    display: flex;
+    gap: 10px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 40px;
+    padding: 5px;
+    transition: all 0.3s ease;
+}
+
+.search-wrapper:focus-within {
+    border-color: #ff385c;
+    box-shadow: 0 2px 8px rgba(255, 56, 92, 0.2);
+}
+
+.simple-search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+}
+
+.simple-search-btn {
+    padding: 12px 30px;
+    background: #ff385c;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.simple-search-btn:hover {
+    background: #e31c5f;
+}
+
+.simple-search-btn i {
+    font-size: 16px;
+}
+
+@media (max-width: 480px) {
+    .search-wrapper {
+        flex-direction: column;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+    
+    .simple-search-input {
+        border: 2px solid #e0e0e0;
+        border-radius: 40px;
+        padding: 12px 20px;
+    }
+    
+    .simple-search-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-text {
+        display: inline;
+    }
+}
+</style>

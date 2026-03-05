@@ -21,6 +21,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+
 //Server
 const dbUrl = process.env.ATLASDB_URL;
 
@@ -71,9 +72,26 @@ app.use((req, res, next) => {
 const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const searchRoutes = require('./routes/search.js'); 
 
+app.use('/', searchRoutes);
 
+async function createSearchIndex() {
+    try {
+        await Listing.collection.createIndex({ 
+            title: 'text', 
+            description: 'text', 
+            location: 'text',
+            country: 'text' 
+        });
+        console.log('Search index created successfully');
+    } catch (error) {
+        console.log('Index might already exist:', error.message);
+    }
+}
 
+// Call this when your app starts
+createSearchIndex();
 
 main()
 .then(() => {
